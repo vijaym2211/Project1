@@ -1,0 +1,50 @@
+import java.io.*;
+import java.util.zip.*;
+
+public class ZipFileCompressor {
+    public static void compressToZip(String sourceFile, String zipFile) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(zipFile);
+             ZipOutputStream zos = new ZipOutputStream(fos);
+             FileInputStream fis = new FileInputStream(sourceFile)) {
+
+            ZipEntry zipEntry = new ZipEntry(new File(sourceFile).getName());
+            zos.putNextEntry(zipEntry);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) >= 0) {
+                zos.write(buffer, 0, length);
+            }
+
+            zos.closeEntry();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        compressToZip("sample.txt", "sample.zip");
+    }
+}
+
+
+
+import java.io.*;
+import java.util.zip.GZIPOutputStream;
+
+public class GzipCompressor {
+    public static void compressToGzip(String sourceFile, String gzipFile) throws IOException {
+        try (FileInputStream fis = new FileInputStream(sourceFile);
+             FileOutputStream fos = new FileOutputStream(gzipFile);
+             GZIPOutputStream gzipOS = new GZIPOutputStream(fos)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                gzipOS.write(buffer, 0, length);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        compressToGzip("sample.txt", "sample.txt.gz");
+    }
+}
