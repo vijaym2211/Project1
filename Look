@@ -1,0 +1,45 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class CSVAppender {
+    public static void main(String[] args) {
+        String filePath = "data.csv";
+        String[] newRow = {"John", "Doe", "30"};
+
+        try (FileWriter fw = new FileWriter(filePath, true)) { // 'true' enables append mode
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < newRow.length; i++) {
+                sb.append(newRow[i]);
+                if (i < newRow.length - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append("\n");  // Add newline after each row
+            fw.write(sb.toString());
+
+            System.out.println("Row appended successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+import com.opencsv.CSVWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class CSVAppendOpenCSV {
+    public static void main(String[] args) {
+        String filePath = "data.csv";
+        String[] row = {"Alice", "Smith", "28"};
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
+            writer.writeNext(row); // Automatically adds a new line
+            System.out.println("Row appended using OpenCSV.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
