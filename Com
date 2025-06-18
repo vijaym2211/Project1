@@ -48,3 +48,37 @@ public class GzipCompressor {
         compressToGzip("sample.txt", "sample.txt.gz");
     }
 }
+
+
+
+
+
+package com.aditya;
+import java.io.*;
+import java.util.zip.*;
+
+
+public class Compress {
+	public static void compressToZip(String sourceFile, String zipFile) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(zipFile);
+             ZipOutputStream zos = new ZipOutputStream(fos);
+             FileInputStream fis = new FileInputStream(sourceFile)) {
+
+            ZipEntry zipEntry = new ZipEntry(new File(sourceFile).getName());
+            zos.putNextEntry(zipEntry);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) >= 0) {
+                zos.write(buffer, 0, length);
+            }
+
+            zos.closeEntry();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        compressToZip("D:\\Downloads\\DPG_MZ_DMZ_URLs.csv", "D:\\Downloads\\sample.zip");
+    }
+
+}
